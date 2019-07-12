@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace WebApplication1
 {
@@ -33,6 +29,7 @@ namespace WebApplication1
                 options.DefaultChallengeScheme = "oidc";
             })
                 .AddCookie("Cookies")
+
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.Authority = "http://localhost:5000";
@@ -40,6 +37,7 @@ namespace WebApplication1
 
                     options.ClientId = "mvc";
                     options.SaveTokens = true;
+
                 });
 
             services.Configure<CookiePolicyOptions>(options =>

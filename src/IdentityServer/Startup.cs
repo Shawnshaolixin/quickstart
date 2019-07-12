@@ -2,10 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System;
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
 
 namespace IdentityServer
 {
@@ -22,7 +24,28 @@ namespace IdentityServer
         {
             // uncomment, if you wan to add an MVC-based UI
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+            services.AddAuthentication()
+     .AddGoogle("Google","谷歌", options =>
+     {
+         options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
+         options.ClientId = "<insert here>";
+         options.ClientSecret = "<insert here>";
+     }).AddOpenIdConnect("oidc", "OpenID Connect 我的", options =>
+     {
+         options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+         options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+         options.SaveTokens = true;
+
+         options.Authority = "https://demo.identityserver.io/";
+         options.ClientId = "implicit";
+
+         options.TokenValidationParameters = new TokenValidationParameters
+         {
+             NameClaimType = "name",
+             RoleClaimType = "role"
+         };
+     });
             var builder = services.AddIdentityServer()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApis())

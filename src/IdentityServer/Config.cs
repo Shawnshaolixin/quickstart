@@ -15,10 +15,14 @@ namespace IdentityServer
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
             return new List<IdentityResource>
-    {
-        new IdentityResources.OpenId(),
-        new IdentityResources.Profile(),
-    };
+            {
+             new IdentityResources.OpenId(),
+              new IdentityResources.Profile(),
+             new IdentityResources.Phone(),
+             new IdentityResources.Email(),
+            new IdentityResources.Address(),
+
+            };
         }
 
         public static IEnumerable<ApiResource> GetApis()
@@ -84,7 +88,10 @@ namespace IdentityServer
             AllowedScopes = new List<string>
             {
                 IdentityServerConstants.StandardScopes.OpenId,
-                IdentityServerConstants.StandardScopes.Profile
+                IdentityServerConstants.StandardScopes.Profile,
+                IdentityServerConstants.StandardScopes.Phone,
+                IdentityServerConstants.StandardScopes.Email,
+                IdentityServerConstants.StandardScopes.Address,
             }
         }
     };
@@ -102,7 +109,9 @@ namespace IdentityServer
             Claims = new []
             {
                 new Claim("name", "Alice"),
-                new Claim("website", "https://alice.com")
+               // new Claim("website", "https://alice111111.com"),
+                new Claim("email","97065227@qq.com"),
+                new Claim("phone_number","13888888")
             }
         },
         new TestUser
@@ -113,8 +122,10 @@ namespace IdentityServer
 
             Claims = new []
             {
-                new Claim("name", "Bob"),
-                new Claim("website", "https://bob.com")
+               new Claim("name", "Bob"),
+               new Claim("website", "https://bob111112232.com"),
+               new Claim("email","88888888@qq.com"),
+               new Claim("phone_number","13888888")
             }
         }
     };

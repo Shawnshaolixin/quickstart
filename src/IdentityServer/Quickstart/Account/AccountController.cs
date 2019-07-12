@@ -77,9 +77,11 @@ namespace IdentityServer
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
             // check if we are in the context of an authorization request
+            //检查我们是否在授权请求的上下文中
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
             // the user clicked the "cancel" button
+            //用户点击了“取消”按钮
             if (button != "login")
             {
                 if (context != null)
@@ -87,13 +89,22 @@ namespace IdentityServer
                     // if the user cancels, send a result back into IdentityServer as if they 
                     // denied the consent (even if this client does not require consent).
                     // this will send back an access denied OIDC error response to the client.
+                    //如果用户取消，则将结果发送回IdentityServer，就像它们一样
+                    //拒绝同意（即使此客户不需要同意）。
+                    //这将向客户端发回拒绝访问的OIDC错误响应。
                     await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
 
                     // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                    //我们可以信任model.ReturnUrl，因为GetAuthorizationContextAsync返回非null
                     if (await _clientStore.IsPkceClientAsync(context.ClientId))
                     {
                         // if the client is PKCE then we assume it's native, so this change in how to
                         // return the response is for better UX for the end user.
+
+
+                        //如果客户端是PKCE，那么我们假设它是原生的，所以这个改变如何
+                        //返回响应是为了为最终用户提供更好的用户体验。
+
                         return View("Redirect", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
                     }
 
@@ -102,6 +113,7 @@ namespace IdentityServer
                 else
                 {
                     // since we don't have a valid context, then we just go back to the home page
+                    //因为我们没有有效的上下文，所以我们只需返回主页
                     return Redirect("~/");
                 }
             }

@@ -37,7 +37,7 @@ namespace WebApplication1
 
                     options.ClientId = "mvc";
                     options.SaveTokens = true;
-
+                 
                 });
 
             services.Configure<CookiePolicyOptions>(options =>
